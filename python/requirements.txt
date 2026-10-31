@@ -1,0 +1,7 @@
+onnxruntime==1.30.0
+misaki==0.7.4
+soundfile==0.14.0
+pypdf==6.20.1
+spacy==3.8.16
+num2words==0.5.14
+numpy>=1.21.6

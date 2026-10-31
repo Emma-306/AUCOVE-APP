@@ -1,0 +1,68 @@
+{
+  "name": "aucove",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "desktop:dev": "concurrently -k \"vite --host 127.0.0.1 --strictPort\" \"wait-on http://127.0.0.1:5173 && electron .\"",
+    "build": "vite build",
+    "desktop:worker": "\".\\.venv\\Scripts\\python.exe\" -m PyInstaller --noconfirm --clean --onedir --name aucove-tts --distpath python/dist --workpath python/build --collect-all misaki --collect-all spacy --collect-all onnxruntime --collect-all soundfile --collect-all en_core_web_sm python/tts_worker.py",
+    "desktop:build": "npm run build && npm run desktop:worker && electron-builder --win",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^1.57.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.6",
+    "electron": "^44.8.0",
+    "electron-builder": "^26.15.3",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.6",
+    "globals": "^17.12.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.0",
+    "wait-on": "^9.5.1"
+  },
+  "main": "electron/main.cjs",
+  "build": {
+    "appId": "com.aucove.desktop",
+    "productName": "Aucove",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "python/dist/aucove-tts",
+        "to": "python-runtime"
+      },
+      {
+        "from": "python/assets",
+        "to": "python/assets"
+      },
+      {
+        "from": "model.onnx",
+        "to": "model.onnx"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  }
+}
